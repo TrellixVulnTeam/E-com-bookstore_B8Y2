@@ -1,4 +1,3 @@
-# CEN4010
 Web application bookstore
 
 <h6>How to create the virtual env inside of the project folder</h6>
