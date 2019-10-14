@@ -1,0 +1,97 @@
+{% load static %}
+<!doctype html>
+    <html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        {% if title %}
+            <title>GeekText Bookstore- {{ title }}</title>
+        {% else %}
+            <title>GeekText Bookstore</title>
+        {% endif %}
+
+        <link rel="stylesheet" type="text/css" href="{% static 'bookstore/css/main.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'books/books.css' %}">
+        <script>
+            function addToWishlist(bookId, wishlistID, elementId) {
+                fetch('http://localhost:8000/add-to-wishlist/'+wishlistID+'/'+bookId)
+                .then((data) => { return data.json()})
+                .then((body) => console.log(body))
+            }
+
+            function removeFromWishList(bookId, wishlistID) {
+                fetch('http://localhost:8000/remove-from-wishlist/'+wishlistID+'/'+bookId)
+                .then((data) => { return data.json()})
+                .then((body) => console.log(body))
+                location.reload();
+            }
+
+            function moveToWishlist(bookId, wishlistID1, wishlistID2) {
+                fetch('http://localhost:8000/move-to-wishlist/'+bookId+'/'+wishlistID1+'/'+wishlistID2)
+                .then((data) => { return data.json()})
+                .then((body) => console.log(body))
+                location.reload();
+            }
+
+            function wishlistControl(wishlistId, inputId, userId, action) {
+                if(action == 'Create') {
+                    var name = document.getElementById(inputId).value;
+                    fetch('http://localhost:8000/create-wishlist/'+userId+'/'+wishlistId+'/'+name)
+                    .then((data) => { return data.json()})
+                    .then((body) => console.log(body))
+
+                    document.getElementById('wishlist-name-'+wishlistId).innerHTML = 
+                    `<b>`+name+`</b>
+                    <button onclick="wishlistControl(`+wishlistId+`, 'create-wistlist-`+wishlistId+`', `+userId+`, 'Delete')">Delete</button>`
+                } else if(action == 'Edit') {
+                    var name = document.getElementById(inputId).value;
+                    fetch('http://localhost:8000/edit-wishlist/'+wishlistId+'/'+name)
+                    .then((data) => { return data.json()})
+                    .then((body) => console.log(body))
+                    document.getElementById('wishlist-title-'+wishlistId).innerHTML = name;
+                } else if(action == 'Delete') {
+                    fetch('http://127.0.0.1:8000/delete-wishlist/'+userId+'/'+wishlistId)
+                    .then((data) => { return data.json()})
+                    .then((body) => console.log(body))
+
+                    document.getElementById('wishlist-name-'+wishlistId).innerHTML = 
+                    `<input id="create-wistlist-`+wishlistId+`" type="text" placeholder="Create Wishlist"/>
+                    <button onclick="wishlistControl(`+wishlistId+`, 'create-wistlist-`+wishlistId+`', `+userId+`, 'Create')">+</button>`
+                }
+            }
+        </script>
+        {% include 'bookstore/css.html'%}
+
+        {% block base_head %}{% endblock %}
+    </head>
+    <body>
+        {% include 'bookstore/navbar.html' %}
+{% if messages %}
+            <div class="alert alert-info alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+            </div>
+    {% endif %}
+            {% block home_content %} {% endblock %}
+            
+
+            {% block register_content %} 
+
+
+
+          
+            {% endblock register_content %}
+            
+            
+
+
+
+
+            {% block listContent %} {% endblock %}
+        {% include 'bookstore/js.html'%}
+    </body>
+</html>

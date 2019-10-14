@@ -1,0 +1,58 @@
+{% extends "bookstore/base.html" %}
+{% load static %}
+
+<title>Wishlist</title>
+
+
+{% block base_head %}
+<!-- <link rel='stylesheet' href='{% static "css/main.css" %}'> -->
+{% endblock %}
+
+{% block home_content %}
+<div>
+    {% for i in wishlistNames %}
+        <div id="wishlist-name-{{forloop.counter0}}">
+            {% if i is not None %}
+                {% if forloop.counter0 is not wishlistNum %}
+                    <a href="/wishlist/{{forloop.counter0}}">View</a>
+                {% endif %}
+                <b id="wishlist-title-{{forloop.counter0}}" {% if forloop.counter0 is wishlistNum %} style="background-color: lightgreen" {% endif %} >{{i.name}}</b>
+                <button onclick="wishlistControl({{i.wishlist_num}}, 'create-wistlist-{{i.wishlist_num}}', {{user.id}}, 'Delete')">Delete</button>
+                <input type="text" id="edit-wistlist-{{forloop.counter0}}" placeholder="Edit name"/>
+                <button onclick="wishlistControl({{forloop.counter0}}, 'edit-wistlist-{{forloop.counter0}}', {{user.id}}, 'Edit')">Edit</button>
+            {% else %}
+                <input id="create-wistlist-{{forloop.counter0}}" type="text" placeholder="Create Wishlist"/>
+                <button onclick="wishlistControl({{forloop.counter0}}, 'create-wistlist-{{forloop.counter0}}', {{user.id}}, 'Create')">+</button>
+            {% endif %}
+        </div>
+    {% endfor %}
+    {% for item in wishlist %}
+        {% if item.wishlist_num is wishlistNum %}
+            <div class="col-lg-4 col-md-6 mb-4 {{item.book.category}}">
+                <div class="card h-100">
+                <a href="#"><img class="card-img-top" src={{item.book.image.url}} alt=""></a>
+                <div class="card-body">
+                    <h4 class="card-title">
+                    <a href="/books/details/{{item.book.id}}">{{item.book.title}}</a>
+                    </h4>
+
+                    <h5>${{item.book.price}}</h5>
+                    <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                    <a href="/books/details/{{item.book.id}}"> Details</a>
+                    <a href="#" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    <button onclick="removeFromWishList({{item.book.id}}, {{wishlistNum}})" class="btn btn-danger float-right"><i class="fas fa-times"></i></button>
+                    {% for i in wishlistNames %}
+                        {% if i is not None and forloop.counter0 is not wishlistNum %}
+                            <button onclick="moveToWishlist({{item.book.id}}, {{wishlistNum}}, {{i.wishlist_num}})" class="btn btn-success">Move To {{i.name}} Wishlist <i class="fas fa-heart"></i></button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %} 

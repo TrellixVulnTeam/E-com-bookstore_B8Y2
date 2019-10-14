@@ -1,0 +1,9 @@
+<form method='POST' action ='{% url "cart:update" %}' > {% csrf_token %}
+        
+        <input type='hidden' name='product_id' value='{{ sproduct.id }}' />    
+           
+            
+        <button  type = 'submit'  class="fas fa-shopping-cart" style ="color: blue"> Move to Cart</button>
+           
+    </form>
+    

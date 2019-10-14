@@ -1,0 +1,26 @@
+{% extends "bookstore/base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block register_content %}
+
+
+<div class="container-fluid col-md-4">
+    
+        <div class="content-section ">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-botton mb-4">Payment Method</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Add Card</button>
+            </div>
+        </form>
+        
+        </div>
+    
+</div>
+
+{% endblock register_content %}

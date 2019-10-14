@@ -1,0 +1,11 @@
+<form method='POST'action ='{% url "save:update" %}' > {% csrf_token %}
+        <input type='hidden' name='save_id' value='{{ product.id }}' />
+        
+  
+        {% if product in save.products.all %}
+        <button  type = 'submit' class='btn btn-link'>Remove</button>
+        {% else %}
+        <button   type = 'submit'  class="fas fa-heart" style ="color: blue"></button>
+        
+    {% endif %}
+    </form>

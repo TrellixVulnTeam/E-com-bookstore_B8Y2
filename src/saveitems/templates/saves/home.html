@@ -1,0 +1,150 @@
+
+
+{% extends "bookstore/base.html" %}
+
+
+{% block home_content %}
+
+
+{% if save.products.exists %}
+<html>
+
+<head>
+    <meta name="CEN 4010" content=" by Juan Morales ">
+  <style type="text/css">
+    body {
+      font-family: Arial;
+      font-size: 17px;
+      padding: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }  
+
+    .col-75 {
+      -ms-flex: 75%;
+      /* IE10 */
+      flex: 75%;
+    }
+
+
+    .container {
+      background-color: #f2f2f2;
+      padding: 10px 20px 15px 20px;
+      border: 1px solid lightgrey;
+      border-radius: 3px;
+    }
+    
+    #main-block{
+      color: black;
+      padding-bottom: 10px;
+      width:58%;     
+		  margin:auto;
+    }
+    #main-footer{
+      
+      padding-top: 70px;
+      padding-left: 370px;
+    }
+
+    .bt {
+      background-color: #4CAF50;
+      color: white;
+      padding: 5px;
+      margin-bottom: 30px;
+      border: none;
+      width: 10%;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 17px;
+    }
+
+    .continue-check {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      margin-bottom: 30px;
+      margin-top: 30px;
+      border: none;
+      width: 100%;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 17px;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    a {
+      color: #2196F3;
+    }
+
+
+    span.price {
+      float: right;
+      color: grey;
+    }
+
+
+    @media (max-width: 800px) {
+      .row {
+        flex-direction: column-reverse;
+      }
+
+
+    }
+  </style>
+</head>
+
+<body>
+  <div id="main-block">
+    <h2>Saved Items ({{ request.session.cart_save }} items) <span class="price" style="color:black"> </span></h2>
+  </div>
+  <div class="container">
+
+    {% for product in save.products.all %}
+
+    <p>
+      <th scope="row">{{ forloop.counter }} - </th> <a href="{{ product.get_url }}">{{ product.title }}</a>
+
+      
+      {% include 'save-items.html' with product=product cart=cart in_cart=True%}
+      
+      {% include 'switchback.html' with sproduct=product scart=cart in_cart=True%}
+
+      <hr>
+    </p>
+
+    {% endfor %}
+
+   
+  </div>
+
+
+
+  
+    
+  
+    <div id = "main-footer"></footer>
+        <p>Copyright &copy; 2019 Juna Morales</p>
+    </div>
+</body>
+
+</html>
+
+{% else %}
+
+<div class="container">
+    <h2>Saved Items ({{ request.session.cart_save }} items) <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i> </span></h2>
+    <footer id = "main-footer">
+        <p>Copyright &copy; 2019 Juan Morales </p>
+    </footer>
+</div>
+
+{% endif %}
+
+
+{% endblock %}
+

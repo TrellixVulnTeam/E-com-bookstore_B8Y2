@@ -1,0 +1,29 @@
+<form action="{% url 'book_list' %}" method="post" class="form my-2 my-lg-0" id="navBarSearchForm">
+   
+    <!-- <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search for any boook" name='q' aria-label="Search" value='{{ request.GET.q }}'>
+            <div class="input-group-append">
+            <button class="btn btn-success" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+            </div>
+    </div> -->
+    <div class="input-group" >
+        <!--<form action="/books/" method="post">-->
+            {% csrf_token %}
+        <input class="form-control" type="text" placeholder="Search for Book/Author" aria-label="Search" name="book-field">
+        <span class='input-group-append'>
+        <button class="btn btn-success" type="submit" d="button-addon2">Search</button>
+        </span>
+        <!--</form>-->
+    </div>
+</form>
+
+<style>
+    #navBarSearchForm input[type=text]{width:430px !important;}
+</style>
+
+<!-- <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search for any boook" aria-label="Search" name='q' aria-label="Search" value='{{ request.GET.q }}'>
+        <div class="input-group-append">
+          <button class="btn btn-success" type="button" id="button-addon2">Button</button>
+        </div>
+</div> -->

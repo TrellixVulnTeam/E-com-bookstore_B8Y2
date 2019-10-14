@@ -1,0 +1,135 @@
+{% extends "bookstore/base.html" %}
+{% block title %}{% if q %}{{ q }}{% else %}All Books{% endif %} | {{ block.super }}{% endblock %}
+{% load static from staticfiles %}
+
+
+
+{% block home_content %}
+
+<div align="right">
+  <form action="{% url 'sorted' %}" method="post" id="sort">
+      {% csrf_token %}
+      <select id="sort_values" name="sort_values">
+      <option value="blank">sort by price</option>
+      <option value="low" {% if value == "low" %}selected{% endif %}>Price low to high</option>
+      <option value="high" {% if value == "high" %}selected{% endif %}>Price high to low</option>
+      </select>
+  </form>
+</div>
+
+<div class="container">
+
+    <div class="row">
+
+      <div class="col-lg-3 ">
+
+      <h5 class="card-header">Refine Search</h5>
+      <div class="list-group">
+          <form action="{% url 'refined_view' %}" method="post">
+              {% csrf_token %}
+        <div class="form-group input-group-sm mb-3">
+            <label for="exampleDropdownFormEmail1">Title</label>
+            <input class="form-control" id="exampleDropdownFormEmail1" placeholder="title" name="title">
+        </div>
+        <div class="form-group input-group-sm mb-3">
+            <label for="exampleDropdownFormEmail1">Author</label>
+            <input class="form-control" placeholder="Name" name="author">
+        </div>
+        <div class="form-group input-group-sm mb-3">
+            <label for="exampleDropdownFormEmail1">Genre</label>
+            <input class="form-control" placeholder="genre" name="genre">
+        </div>
+        <div class="form-group input-group-sm mb-3">
+            <label for="exampleDropdownFormEmail1">Price</label>
+            <input type="text" name="price_min" placeholder="Min Price" style="width:100px">
+            <input type="text" name="price_max" placeholder="Max Price" style="width:100px">
+
+        </div>
+
+        <!-- <div class="form-group">
+            <label for="exampleDropdownFormEmail1">Genre</label>
+            <input type="title" class="form-control" id="exampleDropdownFormEmail1" placeholder="title">
+        </div> -->
+        <!-- <a href="javascript:void(0)" class="list-group-item">Title</a>
+        <a href="javascript:void(0)" class="list-group-item">Author</a>
+        <a href="javascript:void(0)" class="list-group-item">Genre</a>
+        <a href="javascript:void(0)" class="list-group-item">Price</a> -->
+        <div class="form-group input-group-sm mb-3">
+            <label for="exampleDropdownFormEmail1">Rating</label><br>
+              <input type="radio" name="rating" value="5"> <span>★</span> <span>★</span> <span>★</span> <span>★</span> <span>★</span><br>
+              <input type="radio" name="rating" value="4"> <span>★</span> <span>★</span> <span>★</span> <span>★</span> <span>☆</span><br>
+              <input type="radio" name="rating" value="3"> <span>★</span> <span>★</span> <span>★</span> <span>☆</span> <span>☆</span><br>
+              <input type="radio" name="rating" value="2"> <span>★</span> <span>★</span> <span>☆</span> <span>☆</span> <span>☆</span><br>
+              <input type="radio" name="rating" value="1" checked> <span>★</span> <span>☆</span> <span>☆</span> <span>☆</span> <span>☆</span><br>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-sm">Go</button>
+
+      </form>
+    </div>
+
+</div>
+<div class="col-lg-9">
+<br><br><br>
+
+
+
+          <div class="row">
+{% for i in book_by_page %}
+            <div class="col-lg-4 col-md-6 mb-4 {{i.category}}">
+              <div class="card h-100" style="width: 18rem;">
+                <a href="#"><img class="card-img-top" src={{i.image.url}} alt=""></a>
+                <div class="card-body">
+                  <h6 class="card-title">
+                    <a href="/books/details/{{i.id}}" class="text-secondary font-weight-bold">{{i.title}} </a>
+                  </h6>
+
+                  <h6 class="text-success">${{i.price}}</h6>
+                  
+                  <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                 <a href="/books/details/{{i.id}}"> Details</a>
+                 <a href="#" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                </div>
+              </div>
+            </div>
+{% endfor %}
+          </div>
+          <!-- /.row -->
+
+
+    {% if book_by_page.has_other_pages %}
+  <ul class="pagination">
+    {% if book_by_page.has_previous %}
+      <li><a href="?page={{ book_by_page.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in book_by_page.paginator.page_range %}
+      {% if book_by_page.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if book_by_page.has_next %}
+      <li><a href="?page={{ book_by_page.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+
+        </div>
+      </div></div>
+
+      <script>
+          document.getElementById("sort_values").onchange = function() {
+          document.getElementById("sort").submit();
+      };
+      </script>
+
+
+{% endblock %}

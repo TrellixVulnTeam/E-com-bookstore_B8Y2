@@ -1,0 +1,68 @@
+{% url 'login' as login_url %}
+{% url 'register' as register_url %}
+{% load static %}
+<!-- <div class="container"> -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <div class="container">
+        <!-- <a class="navbar-brand" href="{{ home_url }}"><img src="{% static 'img/logo1.svg' %}" width="160" height="30" class="d-inline-block align-top" alt="">{% if brand_name %} {{ brand_name }} {% else %} GeekText {% endif %}</a> -->
+        <a class="navbar-brand" href="{% url 'home_page' %}"><img src="{% static 'bookstore/img/logo1.svg' %}" width="160" height="30" class="d-inline-block align-top" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        {% include 'search/snippets/search-form.html' %}
+        <!-- <li class="nav-item dropdown">
+                <a class="nav-item dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    All Categories
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#">Arts & Music</a>
+                    <a class="dropdown-item" href="#">Biographies</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+        </li> -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav justify-content-end">
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href='{% url "cart:home" %}'><i class="fas fa-shopping-cart"></i> Cart {{ request.session.cart_items }}</a>
+                </li>
+                <li class="nav-item">
+                        <a class="nav-link" href='{% url "save:home" %}'><i class="fas fa-heart" style ="color: blue"></i>  {{ request.session.cart_save }}</a>
+                    </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-alt"></i>
+                        Account
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                        {% if user.is_authenticated %}
+
+                            <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a>
+                                <a class="dropdown-item" href="{% url 'wish_list_default' %}"><i class="fas fa-heart"></i> Wish List</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-shopping-cart"></i> Cart</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="btn btn-primary btn-sm btn-info btn-block" href="{% url 'logout' %}" role="button">Sign out</a>
+
+                            <li class="nav-item"></li>
+                                <a class="navbar-brand" href="{% url 'profile' %}">
+                                        <img src="{{user.profile.image.url }}" width="30" height="30" class="d-inline-block align-top rounded-circle" alt="">
+                                        {{ accounts.username }}
+                                </a>
+                            </li>
+                        {% else %}
+                            <a class="btn btn-primary btn-sm btn-warning btn-block" href="{% url 'login' %}" role="button">Sign In</a>
+                            <a class="btn btn-primary btn-sm btn-success btn-block" href="{% url 'register' %}" role="button">Register</a>
+
+                        {% endif %}
+
+                        <!-- <a class="dropdown-item" href="#">Loguot</a> -->
+                    </div>
+                </li>
+            </ul>
+        </div>
+      </nav>
+    </div>
