@@ -23,5 +23,3 @@ Web application bookstore
   <li>python manage.py migrate</li>
   <li>python manage.py createsuperuser</li>
 </ul>
-# E-com-bookstore
-# E-com-bookstore
